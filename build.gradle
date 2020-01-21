@@ -71,5 +71,8 @@ dependencies {
     configurations.compile.extendsFrom(configurations.extraLibs)
 
     //simplequests-api
-    compile group : 'xyz.annorit24', name: 'simplequests-api', version: '1.0-SNAPSHOT'
+    extraLibs group : 'xyz.annorit24', name: 'simplequests-api', version: '1.0-SNAPSHOT'
+
+    //hermes
+    extraLibs group : 'xyz.annorit24', name: 'hermes', version: '1.0-SNAPSHOT'
 }

@@ -104,4 +104,8 @@ public class TriggerManager {
 
         return triggers;
     }
+
+    public void persistTriggers(){
+        // TODO: 21/01/2020 : Make persistence system for trigger
+    }
 }

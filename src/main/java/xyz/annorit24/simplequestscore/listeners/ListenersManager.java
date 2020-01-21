@@ -1,5 +1,6 @@
 package xyz.annorit24.simplequestscore.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
@@ -12,6 +13,8 @@ import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.plugin.RegisteredListener;
 import xyz.annorit24.simplequestscore.SimpleQuestsCore;
 import xyz.annorit24.simplequestscore.core.events.BukkitEventDispatcher;
+import xyz.annorit24.simplequestscore.listeners.player.PlayerJoinListener;
+import xyz.annorit24.simplequestscore.listeners.player.PlayerQuitListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +56,8 @@ public class ListenersManager {
     }
 
     public void registerListeners(){
-
+        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(javaPlugin),javaPlugin);
+        Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(javaPlugin),javaPlugin);
     }
 
 }

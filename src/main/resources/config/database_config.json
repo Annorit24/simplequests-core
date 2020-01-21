@@ -1,0 +1,4 @@
+{
+  "_comment": "Can be json, mysql or mysql_redis",
+  "database_type": "json"
+}

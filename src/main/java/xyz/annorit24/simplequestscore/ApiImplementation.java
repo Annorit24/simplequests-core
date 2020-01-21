@@ -2,6 +2,7 @@ package xyz.annorit24.simplequestscore;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.annorit24.simplequestsapi.SimpleQuestsAPI;
+import xyz.annorit24.simplequestsapi.client.ClientManager;
 
 /**
  * @author Annorit24
@@ -9,8 +10,13 @@ import xyz.annorit24.simplequestsapi.SimpleQuestsAPI;
  */
 public class ApiImplementation extends SimpleQuestsAPI {
 
-    public ApiImplementation(JavaPlugin javaPlugin) {
+    public ApiImplementation(SimpleQuestsCore javaPlugin) {
         super(javaPlugin);
+    }
+
+    @Override
+    public ClientManager getClientManager() {
+        return ((SimpleQuestsCore)javaPlugin).getClientManager();
     }
 
 }

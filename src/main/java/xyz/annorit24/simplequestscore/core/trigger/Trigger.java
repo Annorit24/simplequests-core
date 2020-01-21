@@ -1,12 +1,9 @@
 package xyz.annorit24.simplequestscore.core.trigger;
 
 import org.bukkit.event.Event;
-import xyz.annorit24.simplequestscore.quest.QuestInfo;
+import xyz.annorit24.simplequestsapi.quest.QuestInfo;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.locks.Condition;
 
 public class Trigger {
@@ -15,15 +12,18 @@ public class Trigger {
     private final UUID playerUniqueId;
     private final QuestInfo questInfo;
 
-    private List<Condition> conditions;
+    private final UUID questStepId;
+
+    private Map<Integer, Condition> conditions;
     private boolean processing;
 
-    public Trigger(Class<? extends Event> event, UUID playerUniqueId, QuestInfo questInfo) {
+    public Trigger(Class<? extends Event> event, UUID playerUniqueId, QuestInfo questInfo, UUID questStepId) {
         this.event = event;
         this.playerUniqueId = playerUniqueId;
         this.questInfo = questInfo;
+        this.questStepId = questStepId;
         this.processing = false;
-        this.conditions = new ArrayList<>();
+        this.conditions = new HashMap<>();
     }
 
     public boolean isProcessing() {
@@ -42,16 +42,20 @@ public class Trigger {
         return playerUniqueId;
     }
 
-    public Trigger addCondition(Condition... conditions){
-        this.conditions.addAll(Arrays.asList(conditions));
+    public Trigger addCondition(Map<Integer, Condition> conditions){
+        this.conditions.putAll(conditions);
         return this;
     }
 
-    public List<Condition> getConditions() {
+    public Map<Integer, Condition> getConditions() {
         return conditions;
     }
 
     public QuestInfo getQuestInfo() {
         return questInfo;
+    }
+
+    public UUID getQuestStepId() {
+        return questStepId;
     }
 }
