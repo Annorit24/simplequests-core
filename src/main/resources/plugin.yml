@@ -2,3 +2,4 @@ name: simplequests
 main: xyz.annorit24.simplequestscore.SimpleQuestsCore
 version: 1.0-SNAPSHOT
 author: Annorit24
+api-version: '1.13'

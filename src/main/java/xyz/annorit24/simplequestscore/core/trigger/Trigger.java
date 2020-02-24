@@ -1,10 +1,11 @@
 package xyz.annorit24.simplequestscore.core.trigger;
 
 import org.bukkit.event.Event;
+import xyz.annorit24.simplequestsapi.actions.Action;
+import xyz.annorit24.simplequestsapi.condition.Condition;
 import xyz.annorit24.simplequestsapi.quest.QuestInfo;
 
 import java.util.*;
-import java.util.concurrent.locks.Condition;
 
 public class Trigger {
 
@@ -15,6 +16,7 @@ public class Trigger {
     private final UUID questStepId;
 
     private Map<Integer, Condition> conditions;
+    private Map<Integer, Action> actions;
     private boolean processing;
 
     public Trigger(Class<? extends Event> event, UUID playerUniqueId, QuestInfo questInfo, UUID questStepId) {
@@ -24,6 +26,7 @@ public class Trigger {
         this.questStepId = questStepId;
         this.processing = false;
         this.conditions = new HashMap<>();
+        this.actions = new HashMap<>();
     }
 
     public boolean isProcessing() {
@@ -42,13 +45,22 @@ public class Trigger {
         return playerUniqueId;
     }
 
-    public Trigger addCondition(Map<Integer, Condition> conditions){
+    public Trigger addConditions(Map<Integer, Condition> conditions){
         this.conditions.putAll(conditions);
+        return this;
+    }
+
+    public Trigger addActions(Map<Integer, Action> actions){
+        this.actions.putAll(actions);
         return this;
     }
 
     public Map<Integer, Condition> getConditions() {
         return conditions;
+    }
+
+    public Map<Integer, Action> getActions() {
+        return actions;
     }
 
     public QuestInfo getQuestInfo() {

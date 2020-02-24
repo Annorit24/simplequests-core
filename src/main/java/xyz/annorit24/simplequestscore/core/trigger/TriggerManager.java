@@ -1,5 +1,6 @@
 package xyz.annorit24.simplequestscore.core.trigger;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import xyz.annorit24.simplequestscore.SimpleQuestsCore;
 
@@ -31,11 +32,17 @@ public class TriggerManager {
     private Map<UUID, List<Trigger>> triggersByPlayerUUID;
 
     /**
+     * Factory use to create trigger owing to quest steps
+     */
+    private TriggerFactory triggerFactory;
+
+    /**
      * Constructor
      */
     public TriggerManager() {
         triggersByEvents = new HashMap<>();
         triggersByPlayerUUID = new HashMap<>();
+        triggerFactory = new TriggerFactory(this);
     }
 
     /**
@@ -79,6 +86,17 @@ public class TriggerManager {
        triggersPlayerUUID.remove(trigger);
     }
 
+    public void unregisterTrigger(Player player){
+        List<Trigger> triggersPlayerUUID = triggersByPlayerUUID.get(player.getUniqueId());
+        if(triggersPlayerUUID==null)return;
+        for (Trigger trigger : triggersPlayerUUID) {
+            Class<? extends Event> eventClazz = trigger.getEvent();
+            triggersByEvents.get(eventClazz).remove(trigger);
+        }
+
+        triggersByPlayerUUID.remove(player.getUniqueId());
+    }
+
     /**
      * Get trigger by the event and the player unique id
      *
@@ -105,7 +123,21 @@ public class TriggerManager {
         return triggers;
     }
 
-    public void persistTriggers(){
-        // TODO: 21/01/2020 : Make persistence system for trigger
+    /**
+     * Get the trigger factory to create new triggers
+     *
+     * @return trigger factory
+     */
+    public TriggerFactory getTriggerFactory() {
+        return triggerFactory;
+    }
+
+
+    public Map<Class<? extends Event>, List<Trigger>> getTriggersByEvents() {
+        return triggersByEvents;
+    }
+
+    public Map<UUID, List<Trigger>> getTriggersByPlayerUUID() {
+        return triggersByPlayerUUID;
     }
 }

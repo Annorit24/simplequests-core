@@ -13,8 +13,8 @@ public class TriggerFactory {
 
     public void buildTrigger(Client client, QuestStep questStep){
         Trigger trigger = createTrigger(client,questStep);
-        trigger.addCondition(questStep.getConditions());
-
+        trigger.addConditions(questStep.getConditions())
+                .addActions(questStep.getActions());
         triggerManager.registerTrigger(trigger);
     }
 

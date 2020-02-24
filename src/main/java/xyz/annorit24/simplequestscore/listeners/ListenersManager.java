@@ -5,6 +5,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityAirChangeEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -46,6 +47,7 @@ public class ListenersManager {
                     ignoredEvents.add(PlayerLoginEvent.class);
 
                     if (ignoredEvents.contains(event.getClass())) return;
+                    if(event instanceof BlockBreakEvent) System.out.println("aaaaaaa : "+((BlockBreakEvent)event).getBlock().getType().name());
 
                     new BukkitEventDispatcher(event, javaPlugin).setPlayer().dispatch();
                 },
@@ -58,6 +60,7 @@ public class ListenersManager {
     public void registerListeners(){
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(javaPlugin),javaPlugin);
         Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(javaPlugin),javaPlugin);
+        Bukkit.getPluginManager().registerEvents(new BreakBlockListener(), javaPlugin);
     }
 
 }

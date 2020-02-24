@@ -1,8 +1,13 @@
 package xyz.annorit24.simplequestscore.utils.events;
 
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLDecoder;
@@ -139,5 +144,24 @@ public final class EventsUtils {
 
             }
         }
+    }
+
+    public static Player getPlayerFromEvent(Event event){
+        try {
+            Method m = event.getClass().getMethod("getPlayer");
+            return (Player) m.invoke(event);
+        } catch (Exception ignored) {
+            try {
+                Method m = event.getClass().getMethod("getEntity");
+                Entity entity = (Entity) m.invoke(event);
+                if(entity instanceof Player){
+                    return (Player) entity;
+                }else{
+                    return null;
+                }
+            } catch (Exception ignored1) {
+            }
+        }
+        return null;
     }
 }

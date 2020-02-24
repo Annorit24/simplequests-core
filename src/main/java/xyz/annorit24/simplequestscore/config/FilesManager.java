@@ -55,4 +55,8 @@ public class FilesManager {
     public File getCLIENT_DATA_DIRECTORY() {
         return CLIENT_DATA_DIRECTORY;
     }
+
+    public File getQUESTS_DIRECTORY() {
+        return QUESTS_DIRECTORY;
+    }
 }

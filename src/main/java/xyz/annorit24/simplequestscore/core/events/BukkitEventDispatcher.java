@@ -1,11 +1,19 @@
 package xyz.annorit24.simplequestscore.core.events;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.block.BlockBreakEvent;
+import xyz.annorit24.simplequestsapi.client.Client;
+import xyz.annorit24.simplequestsapi.quest.QuestInfo;
 import xyz.annorit24.simplequestscore.SimpleQuestsCore;
 import xyz.annorit24.simplequestscore.core.trigger.Trigger;
 import xyz.annorit24.simplequestscore.core.trigger.TriggerManager;
+import xyz.annorit24.simplequestscore.core.trigger.TriggerProcessing;
+import xyz.annorit24.simplequestscore.core.trigger.runnables.LaunchProcessing;
+import xyz.annorit24.simplequestscore.utils.Utils;
+import xyz.annorit24.simplequestscore.utils.client.ClientUtils;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -24,7 +32,7 @@ public class BukkitEventDispatcher {
     /**
      * Event to dispatch
      */
-    private Event event;
+    private volatile Event event;
 
     /**
      * The player object target by the event<br>
@@ -80,6 +88,7 @@ public class BukkitEventDispatcher {
      */
     public void dispatch(){
         if(player == null)return;
+        if(event instanceof BlockBreakEvent) System.out.println("d : "+((BlockBreakEvent)event).getBlock().getType().name());
 
         List<Trigger> triggers = triggerManager.getTriggers(player.getUniqueId(), event.getClass())
                 .stream()
@@ -87,10 +96,66 @@ public class BukkitEventDispatcher {
                 .collect(Collectors.toList());
 
         for (Trigger trigger : triggers) {
+
+            /*Bukkit.getScheduler().runTaskAsynchronously(SimpleQuestsCore.getInstance(),new LaunchProcessing(event));
+
+            Thread t = new Thread(() -> {
+                Bukkit.getScheduler().runTask(SimpleQuestsCore.getInstance(),() -> {
+                    if(event instanceof BlockBreakEvent) System.out.println("d : "+((BlockBreakEvent)event).getBlock().getType().name());
+                });
+                if(event instanceof BlockBreakEvent) System.out.println("e : "+((BlockBreakEvent)event).getBlock().getType().name());
+                if(event instanceof BlockBreakEvent) System.out.println("e(1) : "+((BlockBreakEvent)getEvent()).getBlock().getType().name());
+
+            });
+            t.setPriority(Thread.MAX_PRIORITY);
+            t.start();
+
+            Bukkit.getScheduler().runTaskAsynchronously(SimpleQuestsCore.getInstance(), () -> {
+                if(event instanceof BlockBreakEvent) System.out.println("f : "+((BlockBreakEvent)event).getBlock().getType().name());
+                if(event instanceof BlockBreakEvent) System.out.println("f(1) : "+((BlockBreakEvent)getEvent()).getBlock().getType().name());
+
+            });*/
+/*
+            new Thread(() -> {
+            //Bukkit.getScheduler().runTaskAsynchronously(SimpleQuestsCore.getInstance(), () -> {*/
+
             trigger.setProcessing(true);
-            // TODO: 27/12/2019 processing triggers
-            System.out.println(trigger.getQuestInfo().getQuestId());
+            System.out.println("c");
+
+            TriggerProcessing triggerProcessing = new TriggerProcessing(getEvent(), trigger);
+            System.out.println("d");
+
+            triggerProcessing.processTrigger();
+            System.out.println("e");
+
+
+            new Thread(() -> {
+                System.out.println("f");
+                while (!triggerProcessing.isFinish()) {
+                }
+                System.out.println("g");
+                if (!triggerProcessing.getReprocess()) {
+                    triggerManager.unregisterTrigger(trigger);
+
+                    Client client = SimpleQuestsCore.getInstance().getClientManager().getClient(player.getUniqueId());
+                    QuestInfo questInfo = ClientUtils.getQuestInfoFromQuestId(client, trigger.getQuestInfo().getQuestId());
+                    if (questInfo != null) Utils.buildTriggers(questInfo, client);
+                }
+                trigger.setProcessing(false);
+
+                System.out.println(trigger.getQuestInfo().getQuestId());
+                System.out.println(trigger.getQuestStepId());
+
+            }).start();
+
+            //});
+            /*}).start();*/
         }
+
+    }
+
+    private synchronized Event getEvent(){
+        return event;
     }
 
 }

@@ -49,7 +49,7 @@ public enum ConsoleColor {
      * The code of the color
      * \033[1;CODEm
      */
-    private String code;
+    private String linuxCode;
 
     /**
      * The variables of color
@@ -58,11 +58,11 @@ public enum ConsoleColor {
 
     /**
      * ConsoleColor constructor
-     * @param code the code of the color
+     * @param linuxCode the code of the color
      * @param symbol the variables of the color
      */
-    ConsoleColor(String code, String symbol) {
-        this.code = code;
+    ConsoleColor(String linuxCode, String symbol) {
+        this.linuxCode = linuxCode;
         this.symbol = symbol;
     }
 
@@ -71,15 +71,15 @@ public enum ConsoleColor {
      * @return the format code
      */
     public String getFormatCode(){
-        return "\033[1;"+code+"m";
+        return "\033[1;"+ linuxCode +"m";
     }
 
     /**
      * Get the simple code
      * @return the simple code
      */
-    public String getCode() {
-        return code;
+    public String getLinuxCode() {
+        return linuxCode;
     }
 
     /**

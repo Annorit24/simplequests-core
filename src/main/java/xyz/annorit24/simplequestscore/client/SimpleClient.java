@@ -3,6 +3,7 @@ package xyz.annorit24.simplequestscore.client;
 import org.bukkit.entity.Player;
 import xyz.annorit24.simplequestsapi.client.Client;
 import xyz.annorit24.simplequestsapi.quest.QuestInfo;
+import xyz.annorit24.simplequestscore.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +87,7 @@ public class SimpleClient extends Client {
         for (String s : questsId) {
             QuestInfo questInfo = new QuestInfo(s,"default",0,0);
             activeQuests.add(questInfo);
+            Utils.buildTriggers(questInfo,this);
         }
 
     }

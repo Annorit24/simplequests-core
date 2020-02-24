@@ -8,7 +8,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'idea'
 
 sourceCompatibility = 1.8
-final def VERSION = '1.13-R0.1-SNAPSHOT'
+final def VERSION = '1.13.2-R0.1-SNAPSHOT'
 
 compileJava.options.encoding = 'UTF-8'
 tasks.withType(JavaCompile) {
@@ -60,7 +60,10 @@ configurations.all {
 
 jar {
     from {
-        configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
+
+        configurations.extraLibs.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
     }
 }
 
@@ -71,8 +74,28 @@ dependencies {
     configurations.compile.extendsFrom(configurations.extraLibs)
 
     //simplequests-api
-    extraLibs group : 'xyz.annorit24', name: 'simplequests-api', version: '1.0-SNAPSHOT'
+    extraLibs ('xyz.annorit24:simplequests-api:1.0-SNAPSHOT'){
+        exclude group: 'org.spigotmc'
+        exclude group: 'org.bukkit'
+    }
+
+    //VECMATHS
+    extraLibs group: 'javax.vecmath', name: 'vecmath', version: '1.5.2'
+
+    //SPIGOT
+    compile group : 'org.spigotmc', name: 'spigot-api', version: VERSION
+
+    //CRAFTBUKKIT
+    compile group: 'org.bukkit', name:'craftbukkit', version: VERSION
 
     //hermes
     extraLibs group : 'xyz.annorit24', name: 'hermes', version: '1.0-SNAPSHOT'
+
+    //ASSERTJ
+    testCompile('org.assertj:assertj-core:3.14.0')
+
+    //MOCKITO
+    testCompile('org.mockito:mockito-core:3.2.4')
+
+    compile 'org.apache.commons:commons-collections4:4.1'
 }
