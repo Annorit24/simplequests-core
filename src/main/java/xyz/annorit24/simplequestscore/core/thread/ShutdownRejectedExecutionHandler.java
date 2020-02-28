@@ -1,4 +1,4 @@
-package xyz.annorit24.simplequestscore.utils;
+package xyz.annorit24.simplequestscore.core.thread;
 
 import xyz.annorit24.simplequestscore.utils.logger.LogUtils;
 

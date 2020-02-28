@@ -15,6 +15,8 @@ public class BukkitEventsData {
 
     private Map<UUID, Event> eventsData;
 
+    // TODO: 27/02/2020 add and remove data
+
     public BukkitEventsData() {
         eventsData = new HashMap<>();
     }

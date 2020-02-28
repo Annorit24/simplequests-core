@@ -1,9 +1,14 @@
 package xyz.annorit24.simplequestscore.core.pipeline.api;
 
+import xyz.annorit24.simplequestscore.core.thread.PipelineThreadPoolExecutor;
+import xyz.annorit24.simplequestscore.core.thread.ShutdownRejectedExecutionHandler;
 import xyz.annorit24.simplequestscore.utils.Utils;
 
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Annorit24
@@ -11,15 +16,24 @@ import java.util.concurrent.ExecutorService;
  */
 public abstract class PipelineManager {
 
-    private final ExecutorService executorService;
+    private final PipelineThreadPoolExecutor executorService;
 
     public PipelineManager() {
-        // TODO: 12/02/2020 : Let user change the max_pool and pool_thread_keep_alive in json config @Annorit24
-        executorService = Utils.createThreadPool(100,10,"PLAYERS - PIPELINES");
+
+        executorService = new PipelineThreadPoolExecutor(
+                0,
+                100,
+                5,
+                TimeUnit.MINUTES,
+                new SynchronousQueue<>()
+        );
+
+        executorService.setRejectedExecutionHandler(new ShutdownRejectedExecutionHandler());
+
     }
 
-    public void submitPipelineJob(Callable job){
-        executorService.submit(job);
+    public void submitPipelineJob(Callable<Void> job, UUID playerUUID){
+        executorService.submitPipelineJob(job, playerUUID);
     }
 
 

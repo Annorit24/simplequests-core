@@ -5,6 +5,7 @@ import xyz.annorit24.simplequestsapi.quest.Quest;
 import xyz.annorit24.simplequestsapi.quest.QuestInfo;
 import xyz.annorit24.simplequestsapi.quest.QuestStep;
 import xyz.annorit24.simplequestscore.SimpleQuestsCore;
+import xyz.annorit24.simplequestscore.core.thread.ShutdownRejectedExecutionHandler;
 import xyz.annorit24.simplequestscore.core.trigger.TriggerFactory;
 import xyz.annorit24.simplequestscore.utils.logger.LogUtils;
 
@@ -69,8 +70,9 @@ public class Utils {
         threadPool.setThreadFactory(factory);
         threadPool.setRejectedExecutionHandler(new ShutdownRejectedExecutionHandler());
 
-        // TODO: 24/02/2020 : make a thread group for each player and register them in a "QuestThreadManager" in a hash map with the uuid of the player as key https://www.javatpoint.com/threadgroup-in-java
-        
+        // TODO: 24/02/2020 : make a thread group for each player and register them in a "QuestThreadManager" in a hash map with the uuid of the player as key
+        //https://www.javatpoint.com/threadgroup-in-java
+        //https://www.javarticles.com/2018/06/java-find-all-active-threads.html
         return threadPool;
     }
 }

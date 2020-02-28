@@ -21,7 +21,7 @@ public abstract class Runner implements IQuestEventReader {
     public Callback read(QuestEventContainer container) {
         process(container);
         return null;
-        // TODO: 22/02/2020 do smthing for the callback to call the next runner
+        // TODO: 22/02/2020 do smthing for the callback to call the next runner, use container index
     }
 
     protected abstract void process(QuestEventContainer container);
