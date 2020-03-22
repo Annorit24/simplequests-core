@@ -3,9 +3,9 @@ package xyz.annorit24.simplequestscore.npc;
 import org.bukkit.entity.Player;
 import xyz.annorit24.simplequestsapi.npc.QuestNPC;
 import xyz.annorit24.simplequestsapi.npc.QuestNPCManager;
+import xyz.annorit24.simplequestsapi.utils.logger.LogUtils;
 import xyz.annorit24.simplequestscore.SimpleQuestsCore;
 import xyz.annorit24.simplequestscore.listeners.nmspacket.NPCPacketReader;
-import xyz.annorit24.simplequestscore.utils.logger.LogUtils;
 
 import java.util.HashMap;
 import java.util.Map;

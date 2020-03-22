@@ -2,17 +2,21 @@ package xyz.annorit24.simplequestscore.quests;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import xyz.annorit24.simplequestsapi.actions.Action;
 import xyz.annorit24.simplequestsapi.client.Client;
-import xyz.annorit24.simplequestsapi.condition.Condition;
-import xyz.annorit24.simplequestsapi.quest.QuestInfo;
+import xyz.annorit24.simplequestsapi.pipeline.Pipeline;
+import xyz.annorit24.simplequestsapi.quest.Container;
 import xyz.annorit24.simplequestsapi.quest.QuestStarter;
+import xyz.annorit24.simplequestsapi.quest.components.Action;
+import xyz.annorit24.simplequestsapi.quest.components.Condition;
 import xyz.annorit24.simplequestscore.SimpleQuestsCore;
-import xyz.annorit24.simplequestscore.core.trigger.ActionsCall;
+import xyz.annorit24.simplequestscore.core.pipeline.QuestStartContainer;
+import xyz.annorit24.simplequestscore.core.pipeline.pipeline.PipelineType;
 import xyz.annorit24.simplequestscore.utils.events.EventsUtils;
 
+import javax.print.attribute.IntegerSyntax;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Annorit24
@@ -20,37 +24,32 @@ import java.util.Map;
  */
 public class SimpleQuestStarter extends QuestStarter {
 
-    private List<Condition> conditions;
+    private Map<Integer, Condition> conditions;
     private Map<Integer, Action> actions;
-    private String questId;
 
 
-    public SimpleQuestStarter(List<Condition> conditions, Map<Integer, Action> actions, String questId) {
+    public SimpleQuestStarter(Map<Integer, Condition> conditions, Map<Integer, Action> actions) {
         this.conditions = conditions;
         this.actions = actions;
-        this.questId = questId;
     }
 
     @Override
     public void start(Event event) {
-        if(!isAllConditionValid(event)){
-            conditions.forEach(condition -> condition.manageInvalidCondition(event));
-            return;
-        }
-
         Player player = EventsUtils.getPlayerFromEvent(event);
+        System.out.println("M");
         if(player == null)return;
+        System.out.println("N");
+        UUID eventUUID = SimpleQuestsCore.getInstance().getBukkitEventsData().addData(event);
+        System.out.println("O");
         Client client = SimpleQuestsCore.getInstance().getClientManager().getClient(player.getUniqueId());
-        client.addActiveQuests(questId);
+        System.out.println("P");
 
-        // TODO: 24/01/2020 : a tester l'hitorie de la map null, il peut y avoir des erreurs
-        new ActionsCall(actions,null,event).run();
+        Container startContainer = new QuestStartContainer(player.getUniqueId(), eventUUID, actions, conditions);
+        System.out.println("Q");
+        Pipeline pipeline = client.getPipeline(PipelineType.QUESTS_START);
+        System.out.println("R");
+        pipeline.send(startContainer);
+        System.out.println("S");
     }
 
-    private boolean isAllConditionValid(Event event){
-        for (Condition condition : conditions) {
-            if(!condition.call(event))return false;
-        }
-        return true;
-    }
 }

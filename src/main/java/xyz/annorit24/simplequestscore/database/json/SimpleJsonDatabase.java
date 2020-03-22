@@ -7,11 +7,11 @@ import org.apache.commons.io.FileUtils;
 import org.bukkit.entity.Player;
 import xyz.annorit24.simplequestsapi.client.Client;
 import xyz.annorit24.simplequestsapi.database.Database;
+import xyz.annorit24.simplequestsapi.utils.logger.LogUtils;
 import xyz.annorit24.simplequestscore.SimpleQuestsCore;
 import xyz.annorit24.simplequestscore.client.SimpleClient;
 import xyz.annorit24.simplequestscore.config.FilesManager;
 import xyz.annorit24.simplequestscore.config.Parser;
-import xyz.annorit24.simplequestscore.utils.logger.LogUtils;
 
 import java.io.File;
 import java.io.IOException;

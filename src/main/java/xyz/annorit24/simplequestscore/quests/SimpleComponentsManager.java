@@ -2,9 +2,8 @@ package xyz.annorit24.simplequestscore.quests;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
-import xyz.annorit24.simplequestsapi.actions.Action;
-import xyz.annorit24.simplequestsapi.quest.ComponentsManager;
-import xyz.annorit24.simplequestscore.utils.logger.LogUtils;
+import xyz.annorit24.simplequestsapi.quest.components.ComponentsManager;
+import xyz.annorit24.simplequestsapi.utils.logger.LogUtils;
 
 import java.util.HashMap;
 import java.util.Map;

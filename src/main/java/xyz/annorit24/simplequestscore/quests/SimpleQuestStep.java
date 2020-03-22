@@ -1,10 +1,10 @@
 package xyz.annorit24.simplequestscore.quests;
 
 import org.bukkit.event.Event;
-import xyz.annorit24.simplequestsapi.actions.Action;
-import xyz.annorit24.simplequestsapi.condition.Condition;
 import xyz.annorit24.simplequestsapi.quest.QuestInfo;
 import xyz.annorit24.simplequestsapi.quest.QuestStep;
+import xyz.annorit24.simplequestsapi.quest.components.Action;
+import xyz.annorit24.simplequestsapi.quest.components.Condition;
 
 import java.util.Map;
 import java.util.UUID;
@@ -19,7 +19,7 @@ public class SimpleQuestStep extends QuestStep {
     private Class<? extends Event> event;
     private String description;
     private QuestInfo questInfo;
-    private Map<Integer,Condition> conditions;
+    private Map<Integer, Condition> conditions;
     private Map<Integer, Action> actions;
 
     public SimpleQuestStep(

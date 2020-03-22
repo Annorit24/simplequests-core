@@ -1,14 +1,10 @@
 package xyz.annorit24.simplequestscore.config;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import xyz.annorit24.simplequestsapi.utils.logger.LogUtils;
 import xyz.annorit24.simplequestscore.SimpleQuestsCore;
-import xyz.annorit24.simplequestscore.utils.logger.LogUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 
 /**
  * @author Annorit24

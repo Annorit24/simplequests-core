@@ -1,22 +1,24 @@
 package xyz.annorit24.simplequestscore.core.events;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.inventory.CraftItemEvent;
 import xyz.annorit24.simplequestsapi.client.Client;
-import xyz.annorit24.simplequestsapi.quest.QuestInfo;
+import xyz.annorit24.simplequestsapi.pipeline.Pipeline;
+import xyz.annorit24.simplequestsapi.pipeline.Trigger;
+import xyz.annorit24.simplequestsapi.utils.logger.LogUtils;
 import xyz.annorit24.simplequestscore.SimpleQuestsCore;
-import xyz.annorit24.simplequestscore.core.trigger.Trigger;
+import xyz.annorit24.simplequestscore.core.pipeline.QuestEventContainer;
+import xyz.annorit24.simplequestscore.core.pipeline.pipeline.PipelineType;
 import xyz.annorit24.simplequestscore.core.trigger.TriggerManager;
-import xyz.annorit24.simplequestscore.core.trigger.TriggerProcessing;
-import xyz.annorit24.simplequestscore.core.trigger.runnables.LaunchProcessing;
-import xyz.annorit24.simplequestscore.utils.Utils;
-import xyz.annorit24.simplequestscore.utils.client.ClientUtils;
 
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -72,11 +74,19 @@ public class BukkitEventDispatcher {
                 Entity entity = (Entity) m.invoke(event);
                 if(entity instanceof Player){
                     player = (Player) entity;
-                }else{
-                    player = null;
                 }
             } catch (Exception ignored1) {
-
+                try {
+                    Method m = event.getClass().getMethod("getWhoClicked");
+                    HumanEntity entity = (HumanEntity) m .invoke(event);
+                    if(entity instanceof Player){
+                        player = (Player)entity;
+                    }else {
+                        player = null;
+                    }
+                } catch (Exception ignored2){
+                    player = null;
+                }
             }
         }
         return this;
@@ -84,11 +94,15 @@ public class BukkitEventDispatcher {
 
     /**
      * Method use to dispatch events to all triggers registered<br>
-     * They will be process owing to {@link xyz.annorit24.simplequestscore.core.trigger.TriggerProcessing}
+     * They will be process owing to {@link Pipeline}<br>
+     * <br>
+     * Quest steps events will be process by the {@link xyz.annorit24.simplequestscore.core.pipeline.pipeline.QuestsMainPipeline}
+     * Static Quest steps events will be process by the todo: link l'autre pipeline
      */
     public void dispatch(){
         if(player == null)return;
         if(event instanceof BlockBreakEvent) System.out.println("d : "+((BlockBreakEvent)event).getBlock().getType().name());
+        if(event instanceof CraftItemEvent) System.out.println(" x : "+((CraftItemEvent)event).getRecipe().getResult().getType().name());
 
         List<Trigger> triggers = triggerManager.getTriggers(player.getUniqueId(), event.getClass())
                 .stream()
@@ -96,31 +110,28 @@ public class BukkitEventDispatcher {
                 .collect(Collectors.toList());
 
         for (Trigger trigger : triggers) {
-
-            /*Bukkit.getScheduler().runTaskAsynchronously(SimpleQuestsCore.getInstance(),new LaunchProcessing(event));
-
-            Thread t = new Thread(() -> {
-                Bukkit.getScheduler().runTask(SimpleQuestsCore.getInstance(),() -> {
-                    if(event instanceof BlockBreakEvent) System.out.println("d : "+((BlockBreakEvent)event).getBlock().getType().name());
-                });
-                if(event instanceof BlockBreakEvent) System.out.println("e : "+((BlockBreakEvent)event).getBlock().getType().name());
-                if(event instanceof BlockBreakEvent) System.out.println("e(1) : "+((BlockBreakEvent)getEvent()).getBlock().getType().name());
-
-            });
-            t.setPriority(Thread.MAX_PRIORITY);
-            t.start();
-
-            Bukkit.getScheduler().runTaskAsynchronously(SimpleQuestsCore.getInstance(), () -> {
-                if(event instanceof BlockBreakEvent) System.out.println("f : "+((BlockBreakEvent)event).getBlock().getType().name());
-                if(event instanceof BlockBreakEvent) System.out.println("f(1) : "+((BlockBreakEvent)getEvent()).getBlock().getType().name());
-
-            });*/
-/*
-            new Thread(() -> {
-            //Bukkit.getScheduler().runTaskAsynchronously(SimpleQuestsCore.getInstance(), () -> {*/
-
+            LogUtils.DEBUG.log("101");
             trigger.setProcessing(true);
-            System.out.println("c");
+            LogUtils.DEBUG.log("102");
+
+            UUID eventUUID = SimpleQuestsCore.getInstance().getBukkitEventsData().addData(event);
+            LogUtils.DEBUG.log("103 | eventUUID : "+eventUUID);
+            System.out.println(Thread.currentThread().getName());
+            /*System.out.println(
+                    ((BlockBreakEvent)SimpleQuestsCore.getInstance().getBukkitEventsData().getData(eventUUID)).getBlock().getType().name()
+            );*/
+
+            Client client = SimpleQuestsCore.getInstance().getClientManager().getClient(player.getUniqueId());
+            LogUtils.DEBUG.log("104");
+
+            QuestEventContainer container = new QuestEventContainer(player.getUniqueId(), eventUUID, trigger);
+            LogUtils.DEBUG.log("105");
+            Pipeline pipeline = client.getPipeline(PipelineType.QUESTS_MAIN);
+            LogUtils.DEBUG.log("106");
+
+            pipeline.send(container);
+            LogUtils.DEBUG.log("107");
+            /*System.out.println("c");
 
             TriggerProcessing triggerProcessing = new TriggerProcessing(getEvent(), trigger);
             System.out.println("d");
@@ -152,10 +163,6 @@ public class BukkitEventDispatcher {
             /*}).start();*/
         }
 
-    }
-
-    private synchronized Event getEvent(){
-        return event;
     }
 
 }

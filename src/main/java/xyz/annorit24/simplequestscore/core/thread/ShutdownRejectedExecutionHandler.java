@@ -1,6 +1,6 @@
 package xyz.annorit24.simplequestscore.core.thread;
 
-import xyz.annorit24.simplequestscore.utils.logger.LogUtils;
+import xyz.annorit24.simplequestsapi.utils.logger.LogUtils;
 
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -13,6 +13,6 @@ public class ShutdownRejectedExecutionHandler implements RejectedExecutionHandle
 
     @Override
     public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-        LogUtils.DEBUG.log("Thread rejected : "+r.getClass().getName());    
+        LogUtils.DEBUG.log("Thread rejected : "+r.getClass().getName());
     }
 }

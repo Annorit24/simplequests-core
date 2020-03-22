@@ -2,8 +2,8 @@ package xyz.annorit24.simplequestscore.quests.loader;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import xyz.annorit24.simplequestsapi.utils.logger.LogUtils;
 import xyz.annorit24.simplequestscore.quests.SimpleComponentsManager;
-import xyz.annorit24.simplequestscore.utils.logger.LogUtils;
 
 /**
  * @author Annorit24

@@ -2,8 +2,8 @@ package xyz.annorit24.simplequestscore.quests;
 
 import xyz.annorit24.simplequestsapi.quest.Quest;
 import xyz.annorit24.simplequestsapi.quest.QuestsManager;
+import xyz.annorit24.simplequestsapi.utils.logger.LogUtils;
 import xyz.annorit24.simplequestscore.quests.loader.QuestLoader;
-import xyz.annorit24.simplequestscore.utils.logger.LogUtils;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,7 +1,7 @@
 package xyz.annorit24.simplequestscore.core.trigger;
 
 import org.bukkit.event.Event;
-import xyz.annorit24.simplequestsapi.actions.Action;
+import xyz.annorit24.simplequestsapi.quest.components.Action;
 import xyz.annorit24.simplequestscore.quests.actions.IncrementStepAction;
 import xyz.annorit24.simplequestscore.utils.events.EventsUtils;
 
@@ -29,7 +29,7 @@ public class ActionsCall {
     }
 
     public void run(){
-        new Thread(() -> {
+        /*new Thread(() -> {
             for (Map.Entry<Integer, Action> entry : actions.entrySet()) {
                 Action action = entry.getValue();
                 if(action.isCustomCall())continue;
@@ -47,7 +47,7 @@ public class ActionsCall {
             setFinish(true);
             System.out.println("3");
         }).start();
-        System.out.println("a : "+this.finish);
+        System.out.println("a : "+this.finish);*/
     }
 
     public synchronized boolean isFinish() {

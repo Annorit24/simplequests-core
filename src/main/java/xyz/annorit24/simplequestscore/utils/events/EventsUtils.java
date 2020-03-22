@@ -28,8 +28,10 @@ public final class EventsUtils {
 
     public static void loadEventClasses() {
         try {
-            List a = getClassesFromPackage("org.bukkit.event");
-            a.forEach(Object::getClass);
+            List<Class> a = getClassesFromPackage("org.bukkit.event");
+            a.forEach(o -> {
+                System.out.println(o.getName());
+            });
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }

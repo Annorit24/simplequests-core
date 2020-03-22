@@ -38,7 +38,7 @@ public class PipelineThreadFactory implements ThreadFactory {
         );
     }
 
-    public ThreadGroup getPlayerThreadGroup(UUID playerUUID){
+    public static ThreadGroup getPlayerThreadGroup(UUID playerUUID){
         if(playersThreadGroup.containsKey(playerUUID))return playersThreadGroup.get(playerUUID);
         return playersThreadGroup.put(playerUUID, new ThreadGroup("PipelineThreadGroup#"+playerUUID.toString()));
     }

@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import xyz.annorit24.simplequestsapi.client.Client;
 import xyz.annorit24.simplequestsapi.npc.QuestNPC;
 import xyz.annorit24.simplequestsapi.quest.Quest;
+import xyz.annorit24.simplequestsapi.utils.logger.LogUtils;
 import xyz.annorit24.simplequestscore.SimpleQuestsCore;
 import xyz.annorit24.simplequestscore.events.StartQuestEvent;
 import xyz.annorit24.simplequestscore.version.AbstractNPCSpawner;
@@ -31,11 +32,15 @@ public class QuestStartNPC extends QuestNPC {
 
     @Override
     public void onInteract(Player player) {
+        LogUtils.DEBUG.log("A");
         Client client = SimpleQuestsCore.getInstance().getClientManager().getClient(player.getUniqueId());
+        LogUtils.DEBUG.log("B");
         Quest quest = SimpleQuestsCore.getInstance().getQuestsManager().getQuest(getQuestId());
-
+        LogUtils.DEBUG.log("C");
         if(quest == null || client == null)return;
-
+        LogUtils.DEBUG.log("D");
+        System.out.println(getQuestId());
         quest.getQuestStarter().start(new StartQuestEvent(player, getQuestId()));
+
     }
 }

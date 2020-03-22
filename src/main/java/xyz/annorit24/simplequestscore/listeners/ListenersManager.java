@@ -6,9 +6,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.entity.EntityAirChangeEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerStatisticIncrementEvent;
+import org.bukkit.event.vehicle.VehicleUpdateEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.plugin.RegisteredListener;
@@ -18,6 +21,7 @@ import xyz.annorit24.simplequestscore.listeners.player.PlayerJoinListener;
 import xyz.annorit24.simplequestscore.listeners.player.PlayerQuitListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -45,9 +49,13 @@ public class ListenersManager {
                     ignoredEvents.add(ChunkUnloadEvent.class);
                     ignoredEvents.add(PlayerMoveEvent.class);
                     ignoredEvents.add(PlayerLoginEvent.class);
+                    ignoredEvents.add(VehicleUpdateEvent.class);
+                    ignoredEvents.add(BlockPhysicsEvent.class);
+                    ignoredEvents.add(PlayerStatisticIncrementEvent.class);
 
                     if (ignoredEvents.contains(event.getClass())) return;
                     if(event instanceof BlockBreakEvent) System.out.println("aaaaaaa : "+((BlockBreakEvent)event).getBlock().getType().name());
+                    System.out.println(event.getEventName());
 
                     new BukkitEventDispatcher(event, javaPlugin).setPlayer().dispatch();
                 },

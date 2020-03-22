@@ -1,5 +1,6 @@
-package xyz.annorit24.simplequestscore.core.pipeline.api;
+package xyz.annorit24.simplequestscore.core.pipeline;
 
+import xyz.annorit24.simplequestsapi.pipeline.PipelineManager;
 import xyz.annorit24.simplequestscore.core.thread.PipelineThreadPoolExecutor;
 import xyz.annorit24.simplequestscore.core.thread.ShutdownRejectedExecutionHandler;
 import xyz.annorit24.simplequestscore.utils.Utils;
@@ -14,11 +15,11 @@ import java.util.concurrent.TimeUnit;
  * @author Annorit24
  * Created on 22/02/2020
  */
-public abstract class PipelineManager {
+public class SimplePipelineManager extends PipelineManager {
 
     private final PipelineThreadPoolExecutor executorService;
 
-    public PipelineManager() {
+    public SimplePipelineManager() {
 
         executorService = new PipelineThreadPoolExecutor(
                 0,

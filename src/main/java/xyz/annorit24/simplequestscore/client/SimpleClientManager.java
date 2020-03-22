@@ -4,8 +4,8 @@ import org.bukkit.Bukkit;
 import xyz.annorit24.simplequestsapi.client.Client;
 import xyz.annorit24.simplequestsapi.client.ClientManager;
 import xyz.annorit24.simplequestsapi.database.Database;
+import xyz.annorit24.simplequestsapi.utils.logger.LogUtils;
 import xyz.annorit24.simplequestscore.SimpleQuestsCore;
-import xyz.annorit24.simplequestscore.utils.logger.LogUtils;
 
 import java.util.HashMap;
 import java.util.Map;

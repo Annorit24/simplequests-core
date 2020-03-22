@@ -2,12 +2,16 @@ package xyz.annorit24.simplequestscore.client;
 
 import org.bukkit.entity.Player;
 import xyz.annorit24.simplequestsapi.client.Client;
+import xyz.annorit24.simplequestsapi.pipeline.Pipeline;
 import xyz.annorit24.simplequestsapi.quest.QuestInfo;
+import xyz.annorit24.simplequestsapi.utils.logger.LogUtils;
+import xyz.annorit24.simplequestscore.SimpleQuestsCore;
+import xyz.annorit24.simplequestscore.core.pipeline.pipeline.PipelineType;
+import xyz.annorit24.simplequestscore.core.pipeline.pipeline.QuestsMainPipeline;
+import xyz.annorit24.simplequestscore.core.pipeline.pipeline.QuestsStarterPipeline;
 import xyz.annorit24.simplequestscore.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Annorit24
@@ -41,6 +45,11 @@ public class SimpleClient extends Client {
      */
     private List<String> questsDone;
 
+    /**
+     * Main pipeline use to process quest step event
+     */
+    private Map<String, Pipeline> pipelines;
+
     public SimpleClient() {
         super();
         System.out.println("Test");
@@ -54,6 +63,20 @@ public class SimpleClient extends Client {
         this.displayName = displayName;
         this.activeQuests = activeQuests;
         this.questsDone = questsDone;
+        this.pipelines = new HashMap<>();
+
+        pipelines.put(PipelineType.QUESTS_MAIN.getName(), new QuestsMainPipeline(SimpleQuestsCore.getInstance().getPipelineManager()));
+        pipelines.put(PipelineType.QUESTS_START.getName(), new QuestsStarterPipeline(SimpleQuestsCore.getInstance().getPipelineManager()));
+    }
+
+    @Override
+    public Pipeline getPipeline(String type) {
+        if(!pipelines.containsKey(type)){
+            LogUtils.ERROR.log("Could not get pipeline with the type "+type);
+            return null;
+        }
+
+        return pipelines.get(type);
     }
 
     @Override

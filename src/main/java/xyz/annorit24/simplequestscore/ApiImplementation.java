@@ -1,14 +1,14 @@
 package xyz.annorit24.simplequestscore;
 
-import org.bukkit.plugin.java.JavaPlugin;
 import xyz.annorit24.simplequestsapi.SimpleQuestsAPI;
-import xyz.annorit24.simplequestsapi.actions.Action;
 import xyz.annorit24.simplequestsapi.client.ClientManager;
-import xyz.annorit24.simplequestsapi.condition.Condition;
 import xyz.annorit24.simplequestsapi.npc.QuestNPCManager;
 import xyz.annorit24.simplequestsapi.packet.PacketReaderManager;
-import xyz.annorit24.simplequestsapi.quest.ComponentsManager;
+import xyz.annorit24.simplequestsapi.pipeline.BukkitEventsData;
 import xyz.annorit24.simplequestsapi.quest.QuestsManager;
+import xyz.annorit24.simplequestsapi.quest.components.Action;
+import xyz.annorit24.simplequestsapi.quest.components.ComponentsManager;
+import xyz.annorit24.simplequestsapi.quest.components.Condition;
 
 /**
  * @author Annorit24
@@ -48,6 +48,11 @@ public class ApiImplementation extends SimpleQuestsAPI {
     @Override
     public QuestNPCManager questNPCManager() {
         return ((SimpleQuestsCore)javaPlugin).getQuestNPCManager();
+    }
+
+    @Override
+    public BukkitEventsData getBukkitEventsData() {
+        return ((SimpleQuestsCore)javaPlugin).getBukkitEventsData();
     }
 
 }

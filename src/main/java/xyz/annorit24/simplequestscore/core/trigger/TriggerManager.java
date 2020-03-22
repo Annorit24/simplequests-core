@@ -2,6 +2,7 @@ package xyz.annorit24.simplequestscore.core.trigger;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import xyz.annorit24.simplequestsapi.pipeline.Trigger;
 import xyz.annorit24.simplequestscore.SimpleQuestsCore;
 
 import java.util.*;
