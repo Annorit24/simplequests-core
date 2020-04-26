@@ -2,6 +2,7 @@ package xyz.annorit24.simplequestscore.client;
 
 import org.bukkit.entity.Player;
 import xyz.annorit24.simplequestsapi.client.Client;
+import xyz.annorit24.simplequestsapi.customdata.CustomData;
 import xyz.annorit24.simplequestsapi.pipeline.Pipeline;
 import xyz.annorit24.simplequestsapi.quest.QuestInfo;
 import xyz.annorit24.simplequestsapi.utils.logger.LogUtils;
@@ -49,6 +50,11 @@ public class SimpleClient extends Client {
      * Main pipeline use to process quest step event
      */
     private Map<String, Pipeline> pipelines;
+
+    /**
+     * todo:doc
+     */
+    private volatile Map<String, CustomData> customDatas;
 
     public SimpleClient() {
         super();
@@ -110,7 +116,7 @@ public class SimpleClient extends Client {
         for (String s : questsId) {
             QuestInfo questInfo = new QuestInfo(s,"default",0,0);
             activeQuests.add(questInfo);
-            Utils.buildTriggers(questInfo,this);
+            Utils.buildTriggers(questInfo,UNIQUE_ID);
         }
 
     }
@@ -128,6 +134,39 @@ public class SimpleClient extends Client {
     @Override
     public void removeQuestDone(String s) {
 
+    }
+
+    @Override
+    public void updateCustomData(String key, Object o) {
+        if(!customDatas.containsKey(key)){
+            LogUtils.ERROR.log("@SimpleClient:updateCustomData Could not update CustomData with the key "+key+", it doesn't exist");
+            return;
+        }
+        CustomData data = customDatas.get(key);
+        data.updateValue(o);
+    }
+
+    @Override
+    public CustomData getCustomData(String key) {
+        if(!customDatas.containsKey(key)){
+            LogUtils.ERROR.log("@SimpleClient:updateCustomData Could not get CustomData "+key+", it doesn't exist");
+            return null;
+        }
+        return customDatas.get(key);
+    }
+
+    @Override
+    public Object getCustomDataValue(String key) {
+        if(!customDatas.containsKey(key)){
+            LogUtils.ERROR.log("@SimpleClient:updateCustomData Could not get CustomData "+key+", it doesn't exist");
+            return null;
+        }
+        return customDatas.get(key).getValue();
+    }
+
+    @Override
+    public Map<String, CustomData> getCustomDatas() {
+        return customDatas;
     }
 
     @Override

@@ -27,28 +27,6 @@ public class IncrementStepAction extends Action {
         this.questId = questId;
     }
 
-    /*public IncrementStepAction(List<Integer> validConditions, boolean customCall, String questId) {
-        super(validConditions, customCall);
-        this.questId = questId;
-        this.reprocess = true;
-    }*/
-
-
-    /*public void call(Player player, Map<Integer, Boolean> result) {
-        if(isConditionsValid(result)) {
-            Client client = SimpleQuestsCore.getInstance().getClientManager().getClient(player.getUniqueId());
-            QuestInfo info = ClientUtils.getQuestInfoFromQuestId(client, questId);
-            if (info == null) return;
-            info.setStep(info.getStep() + 1);
-            reprocess = false;
-        }else{
-            reprocess = true;
-        }
-        finish = true;
-    }*/
-
-
-
     public boolean isReprocess() {
         return reprocess;
     }
@@ -76,4 +54,10 @@ public class IncrementStepAction extends Action {
         }
 
     }
+
+    @Override
+    public Action cloneAction() {
+        return new IncrementStepAction(getRequireValidConditions(),isCustomCall(),questId);
+    }
+
 }

@@ -13,4 +13,5 @@ public abstract class AbstractNPCSpawner {
 
     public abstract Integer getId();
 
+    public abstract Object getNPC();
 }

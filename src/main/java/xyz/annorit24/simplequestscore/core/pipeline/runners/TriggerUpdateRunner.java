@@ -6,12 +6,16 @@ import xyz.annorit24.simplequestsapi.pipeline.Runner;
 import xyz.annorit24.simplequestsapi.pipeline.Trigger;
 import xyz.annorit24.simplequestsapi.quest.Container;
 import xyz.annorit24.simplequestsapi.quest.QuestInfo;
+import xyz.annorit24.simplequestsapi.quest.components.Action;
+import xyz.annorit24.simplequestsapi.quest.components.Revertible;
 import xyz.annorit24.simplequestsapi.utils.logger.LogUtils;
 import xyz.annorit24.simplequestscore.SimpleQuestsCore;
 import xyz.annorit24.simplequestscore.core.pipeline.QuestEventContainer;
 import xyz.annorit24.simplequestscore.core.trigger.TriggerManager;
 import xyz.annorit24.simplequestscore.utils.Utils;
 import xyz.annorit24.simplequestscore.utils.client.ClientUtils;
+
+import java.util.Map;
 
 /**
  * @author Annorit24
@@ -25,37 +29,47 @@ public final class TriggerUpdateRunner extends Runner {
 
     @Override
     protected void process(Container container) {
-        LogUtils.DEBUG.log("501");
+        boolean override = false;
+
+        if(container.isCriticalConditionsResult() ||container.isCriticalActionsResult()){
+            override = true;
+        }
+
         if(!(container instanceof QuestEventContainer)){
             LogUtils.ERROR.log("Could not process the container for the player with the following uuid"+container.getPlayerUUID()+". Error @ TriggerUpdateRunner receive a container which is not an instance of QuestEventContainer");
             return;
         }
 
         if(pipeline.isInterrupt()){
-            return;
+            container.setReprocess(false);
         }
-        LogUtils.DEBUG.log("502");
 
         Trigger trigger = ((QuestEventContainer)container).getProcessingTrigger();
-        LogUtils.DEBUG.log("503");
         TriggerManager triggerManager = SimpleQuestsCore.getInstance().getTriggerManager();
-        LogUtils.DEBUG.log("503");
 
-        if (!container.isReprocess()) {
-            LogUtils.DEBUG.log("503");
+        if (!container.isReprocess() || override) {
             triggerManager.unregisterTrigger(trigger);
-            LogUtils.DEBUG.log("504");
-            Client client = SimpleQuestsCore.getInstance().getClientManager().getClient(container.getPlayerUUID());
-            LogUtils.DEBUG.log("505");
-            QuestInfo questInfo = ClientUtils.getQuestInfoFromQuestId(client, trigger.getQuestInfo().getQuestId());
-            LogUtils.DEBUG.log("506");
-            if (questInfo != null) Utils.buildTriggers(questInfo, client);
-            LogUtils.DEBUG.log("507");
+
+            if(!pipeline.isInterrupt()){
+                Client client = SimpleQuestsCore.getInstance().getClientManager().getClient(container.getPlayerUUID());
+                QuestInfo questInfo = ClientUtils.getQuestInfoFromQuestId(client, trigger.getQuestInfo().getQuestId());
+
+                if (questInfo != null) Utils.buildTriggers(questInfo, client.getUniqueId());
+            }else{
+                for (Map.Entry<Integer, Action> entry : container.getActions().entrySet()) {
+                    Action action = entry.getValue();
+
+                    if(action instanceof Revertible){
+                        ((Revertible)action).revert(container.getPlayerUUID());
+                    }
+                }
+            }
+
+
         }
-        LogUtils.DEBUG.log("508");
+
         trigger.setProcessing(false);
-        LogUtils.DEBUG.log("509");
         SimpleQuestsCore.getInstance().getBukkitEventsData().removeData(container.getBukkitEventUUID());
-        LogUtils.DEBUG.log("509");
+        // TODO: 29/03/2020 : Clean quest step data and clean quest data in a cleaner runner
     }
 }

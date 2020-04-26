@@ -14,7 +14,7 @@ import java.util.List;
  * @author Annorit24
  * Created on 03/03/2020
  */
-public class StartQuestAction extends Action {
+public class StartQuestAction extends Action implements Cloneable{
 
     private String questId;
 
@@ -35,5 +35,15 @@ public class StartQuestAction extends Action {
 
         client.addActiveQuests(questId);
         return () -> ComponentResult.SUCCESS;
+    }
+
+    @Override
+    public Action cloneAction() {
+        return new StartQuestAction(getRequireValidConditions(),questId);
+    }
+
+    @Override
+    protected StartQuestAction clone(){
+        return new StartQuestAction(getRequireValidConditions(),questId);
     }
 }

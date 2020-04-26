@@ -10,6 +10,7 @@ import xyz.annorit24.simplequestscore.core.thread.ShutdownRejectedExecutionHandl
 import xyz.annorit24.simplequestscore.core.trigger.TriggerFactory;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -29,7 +30,7 @@ public class Utils {
         return null;
     }
 
-    public static void buildTriggers(QuestInfo questInfo, Client client){
+    public static void buildTriggers(QuestInfo questInfo, UUID clientUUID){
         String questId = questInfo.getQuestId();
         Quest quest = SimpleQuestsCore.getInstance().getQuestsManager().getQuest(questId);
 
@@ -43,7 +44,7 @@ public class Utils {
         for (QuestStep questStep : questSteps) {
             System.out.println(questStep.getQuestStepInfo().getStep());
             System.out.println("Factoring");
-            factory.buildTrigger(client,questStep);
+            factory.buildTrigger(clientUUID,questStep);
         }
     }
 

@@ -1,8 +1,11 @@
 package xyz.annorit24.simplequestscore.core.trigger;
 
-import xyz.annorit24.simplequestsapi.client.Client;
 import xyz.annorit24.simplequestsapi.pipeline.Trigger;
 import xyz.annorit24.simplequestsapi.quest.QuestStep;
+
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class TriggerFactory {
 
@@ -12,17 +15,21 @@ public class TriggerFactory {
         this.triggerManager = triggerManager;
     }
 
-    public void buildTrigger(Client client, QuestStep questStep){
-        Trigger trigger = createTrigger(client,questStep);
+    public void buildTrigger(UUID clientUUID, QuestStep questStep){
+        Trigger trigger = createTrigger(clientUUID,questStep);
         trigger.addConditions(questStep.getConditions())
-                .addActions(questStep.getActions());
+                .addActions(questStep.getActions()
+                        .entrySet()
+                        .stream()
+                        .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().cloneAction()))
+                );
         triggerManager.registerTrigger(trigger);
     }
 
-    private Trigger createTrigger(Client client, QuestStep questStep){
+    private Trigger createTrigger(UUID clientUUID, QuestStep questStep){
         return new SimpleTrigger(
                 questStep.getEvent(),
-                client.getUniqueId(),
+                clientUUID,
                 questStep.getQuestStepInfo(),
                 questStep.getQuestStepId()
         );

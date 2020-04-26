@@ -17,6 +17,8 @@ import java.util.Map;
 public class SimpleQuestNPCManager extends QuestNPCManager {
 
     private Map<Integer, QuestNPC> npcs;
+    //TEST
+    public static Integer ID = 0;
 
     public SimpleQuestNPCManager(SimpleQuestsCore plugin) {
         this.npcs = new HashMap<>();
@@ -30,6 +32,7 @@ public class SimpleQuestNPCManager extends QuestNPCManager {
             return;
         }
         System.out.println("ID : "+questNPC.getId());
+        ID = questNPC.getId();
         npcs.put(questNPC.getId(), questNPC);
     }
 

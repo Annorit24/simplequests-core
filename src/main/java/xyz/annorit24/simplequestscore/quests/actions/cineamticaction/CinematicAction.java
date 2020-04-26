@@ -61,6 +61,11 @@ public class CinematicAction extends Action {
         return () -> ComponentResult.FAILURE;
     }
 
+    @Override
+    public Action cloneAction() {
+        return null;
+    }
+
     /*public CinematicAction(List<Integer> validConditions, boolean customCall, List<Vector3f> keysPosition) {
         super(validConditions, customCall);
         this.spline3D = new Spline3D();

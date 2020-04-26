@@ -11,12 +11,14 @@ import org.bukkit.event.entity.EntityAirChangeEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerStatisticIncrementEvent;
+import org.bukkit.event.vehicle.VehicleBlockCollisionEvent;
 import org.bukkit.event.vehicle.VehicleUpdateEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.plugin.RegisteredListener;
 import xyz.annorit24.simplequestscore.SimpleQuestsCore;
 import xyz.annorit24.simplequestscore.core.events.BukkitEventDispatcher;
+import xyz.annorit24.simplequestscore.listeners.npc.NPCRightClickListener;
 import xyz.annorit24.simplequestscore.listeners.player.PlayerJoinListener;
 import xyz.annorit24.simplequestscore.listeners.player.PlayerQuitListener;
 
@@ -52,6 +54,7 @@ public class ListenersManager {
                     ignoredEvents.add(VehicleUpdateEvent.class);
                     ignoredEvents.add(BlockPhysicsEvent.class);
                     ignoredEvents.add(PlayerStatisticIncrementEvent.class);
+                    ignoredEvents.add(VehicleBlockCollisionEvent.class);
 
                     if (ignoredEvents.contains(event.getClass())) return;
                     if(event instanceof BlockBreakEvent) System.out.println("aaaaaaa : "+((BlockBreakEvent)event).getBlock().getType().name());
@@ -68,7 +71,8 @@ public class ListenersManager {
     public void registerListeners(){
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(javaPlugin),javaPlugin);
         Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(javaPlugin),javaPlugin);
-        Bukkit.getPluginManager().registerEvents(new BreakBlockListener(), javaPlugin);
+        //Bukkit.getPluginManager().registerEvents(new BreakBlockListener(), javaPlugin);
+        Bukkit.getPluginManager().registerEvents(new NPCRightClickListener(javaPlugin),javaPlugin);
     }
 
 }

@@ -2,6 +2,7 @@ package xyz.annorit24.simplequestscore;
 
 import xyz.annorit24.simplequestsapi.SimpleQuestsAPI;
 import xyz.annorit24.simplequestsapi.client.ClientManager;
+import xyz.annorit24.simplequestsapi.npc.NPCStartManager;
 import xyz.annorit24.simplequestsapi.npc.QuestNPCManager;
 import xyz.annorit24.simplequestsapi.packet.PacketReaderManager;
 import xyz.annorit24.simplequestsapi.pipeline.BukkitEventsData;
@@ -53,6 +54,11 @@ public class ApiImplementation extends SimpleQuestsAPI {
     @Override
     public BukkitEventsData getBukkitEventsData() {
         return ((SimpleQuestsCore)javaPlugin).getBukkitEventsData();
+    }
+
+    @Override
+    public NPCStartManager npcStartManager() {
+        return ((SimpleQuestsCore)javaPlugin).getNpcStartManager();
     }
 
 }

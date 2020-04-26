@@ -5,8 +5,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
+import xyz.annorit24.simplequestsapi.client.Client;
 import xyz.annorit24.simplequestscore.SimpleQuestsCore;
 import xyz.annorit24.simplequestscore.core.packet.SimplePacketReaderManager;
+import xyz.annorit24.simplequestscore.core.pipeline.pipeline.PipelineType;
 
 /**
  * @author Annorit24
@@ -28,9 +30,14 @@ public class PlayerQuitListener implements Listener {
         System.out.println(plugin.getTriggerManager().getTriggersByEvents());
         System.out.println(plugin.getTriggerManager().getTriggersByPlayerUUID());
 
+        Client client = plugin.getClientManager().getClient(player.getUniqueId());
+        client.getPipeline(PipelineType.QUESTS_MAIN).interruptPipeline();
+
         Bukkit.getScheduler().runTaskAsynchronously(plugin,() -> {
             plugin.getClientManager().unloadClient(player.getUniqueId());
         });
+
+
     }
 
 }

@@ -32,15 +32,19 @@ public class QuestStartNPC extends QuestNPC {
 
     @Override
     public void onInteract(Player player) {
-        LogUtils.DEBUG.log("A");
+        LogUtils.DEBUG.log("A1");
         Client client = SimpleQuestsCore.getInstance().getClientManager().getClient(player.getUniqueId());
-        LogUtils.DEBUG.log("B");
+        LogUtils.DEBUG.log("B1");
         Quest quest = SimpleQuestsCore.getInstance().getQuestsManager().getQuest(getQuestId());
-        LogUtils.DEBUG.log("C");
+        LogUtils.DEBUG.log("C1");
         if(quest == null || client == null)return;
-        LogUtils.DEBUG.log("D");
+        LogUtils.DEBUG.log("D1");
         System.out.println(getQuestId());
-        quest.getQuestStarter().start(new StartQuestEvent(player, getQuestId()));
+        //quest.getQuestStarter().start(new StartQuestEvent(player, getQuestId(), npcId));
 
+    }
+
+    public AbstractNPCSpawner getNpcSpawner() {
+        return npcSpawner;
     }
 }

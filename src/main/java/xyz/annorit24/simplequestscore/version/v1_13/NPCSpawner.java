@@ -27,7 +27,7 @@ public class NPCSpawner extends AbstractNPCSpawner {
         WorldServer world = (WorldServer) PacketUtils.getCraftObject(location.getWorld());
         EntityPlayer npc = new EntityPlayer(server,world, new GameProfile(new MojangRequest().getUuidFromMojang(usernameSkin),npcName), new PlayerInteractManager(world));
         npc.teleportTo(location,false);
-
+        npc.setNoGravity(false);
         this.id = npc.getId();
         this.npc = npc;
     }
@@ -46,5 +46,10 @@ public class NPCSpawner extends AbstractNPCSpawner {
     @Override
     public Integer getId() {
         return id;
+    }
+
+    @Override
+    public Object getNPC() {
+        return npc;
     }
 }

@@ -48,4 +48,9 @@ public class MessageAction extends Action {
         return () -> ComponentResult.FAILURE;
 
     }
+
+    @Override
+    public Action cloneAction() {
+        return new MessageAction(getRequireValidConditions(),isCritical(),isCustomCall(),textComponent);
+    }
 }

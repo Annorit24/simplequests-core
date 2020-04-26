@@ -14,10 +14,12 @@ public class StartQuestEvent extends PlayerEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancel = false;
     private String questId;
+    private Integer npcId;
 
-    public StartQuestEvent(Player who, String questId) {
+    public StartQuestEvent(Player who, String questId, Integer npcId) {
         super(who);
         this.questId = questId;
+        this.npcId = npcId;
     }
 
     @Override
@@ -37,5 +39,9 @@ public class StartQuestEvent extends PlayerEvent implements Cancellable {
 
     public String getQuestId() {
         return questId;
+    }
+
+    public Integer getNpcId() {
+        return npcId;
     }
 }

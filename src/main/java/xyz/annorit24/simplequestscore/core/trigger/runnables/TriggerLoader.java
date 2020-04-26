@@ -32,7 +32,7 @@ public class TriggerLoader implements Runnable{
         for (QuestInfo activeQuest : activeQuests) {
             System.out.println(activeQuest.getQuestId());
             System.out.println(activeQuest.getStep());
-            Utils.buildTriggers(activeQuest,client);
+            Utils.buildTriggers(activeQuest,client.getUniqueId());
             /*String questId = activeQuest.getQuestId();
             Quest quest = questsManager.getQuest(questId);
 
